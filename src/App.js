@@ -16,30 +16,19 @@ function App() {
 
   // fetching posts list
   useEffect(() => {
-    
-    // fetch('https://jsonplaceholder.typicode.com/posts')
-    //     .then(res => res.json())
-    //     .then((data) => {
-    //       setList(data);
-    //     })
-
 
     axios({
       "method": "GET",
       "url": "https://jsonplaceholder.typicode.com/posts",
     })
-    .then((response) => {
-      setList(response.data)
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-    
+      .then((response) => {
+        setList(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
   }, [setList, list])
-
-  
-
-  //  console.log(list);
 
 
 
@@ -47,15 +36,11 @@ function App() {
     <div >
       <Router>
 
-      <NavBar />
-      <Route path="/" exact render={() =><PostsList list={list}/>} />
-      <Route path="/post/" render={() =><Post />} />
-      
-
+        <NavBar />
+        <Route path="/" exact render={() => <PostsList list={list} />} />
+        <Route path="/post/" render={() => <Post />} />
 
       </Router>
-      
-     
     </div>
   );
 }

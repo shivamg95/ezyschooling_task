@@ -6,9 +6,9 @@ export const PostsList = (props) => {
 
     return (
         <div className="pt-5">
-            <div className="pt-5">
+            <div className="pt-3">
 
-                
+                <h1 className="text-center"> Welcome to EzySchooling Blog</h1>
 
             {props.list.length===0 ? "There is no blog post yet !!": 
                 props.list.map((item) => {
