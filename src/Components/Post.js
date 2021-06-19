@@ -4,16 +4,14 @@ import axios from 'axios';
 
 export const Post = (props) => {
 
-
-  let [fullPost, setfullPost] = useState('');
-  let [comment, setComment] = useState('');
-  let [author, setAuthor] = useState('');
-
-
   var postID = window.location.href.substring(
     window.location.href.lastIndexOf("/post/") + 6,
     window.location.href.length
   );
+  let [fullPost, setfullPost] = useState('');
+  let [comment, setComment] = useState('');
+  let [author, setAuthor] = useState('');
+
 
   // fetching blogpost data
   useEffect(() => {
@@ -21,17 +19,31 @@ export const Post = (props) => {
 
     axios({
       "method": "GET",
-      "url": "https://jsonplaceholder.typicode.com/posts/" + postID+"",
+      "url": "https://jsonplaceholder.typicode.com/posts/" + postID + "",
     })
       .then((response) => {
         setfullPost(response.data);
+
+        // Fetch Author of the selected post
+
+        axios({
+          "method": "GET",
+          "url": "https://jsonplaceholder.typicode.com/users/" + response.data.userId,
+        })
+          .then((res) => {
+            setAuthor(res.data);
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+
 
       })
       .catch((error) => {
         console.log(error)
       })
 
-  }, [setfullPost, fullPost])
+  }, [])
 
 
 
@@ -49,48 +61,29 @@ export const Post = (props) => {
         console.log(error)
       })
 
-  }, [setComment, comment])
-
-
-  // fetch author
-  useEffect(() => {
-
-    
-    axios({
-      "method": "GET",
-      "url": "https://jsonplaceholder.typicode.com/users/" + fullPost.userId,
-    })
-      .then((res) => {
-        setAuthor(res.data);
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-
-  }, [setAuthor, author])
-
+  }, [])
 
 
 
   return (
     <div className="pt-5">
-      <div className="pt-4">
+      <div className="pt-4 px-3">
 
         {/* Post content */}
-        <h3 className="text-center">{fullPost.title}</h3>
-        <p className="text-center">{fullPost.body}</p>
+        <h2 className="text-center text-success">{fullPost.title}</h2>
+        <p className="text-center px-3 mt-3">{fullPost.body}</p>
 
         {/* Author of the post */}
-        <b> AUTHOR: {author.name}</b>
+        <div className='text-end px-2'> <b>AUTHOR:</b> {author.name}</div>
         <br />
         <hr />
 
         {/* blog Comments */}
-        <b>COMMENTS</b>
+        <h4 className="text-success">COMMENTS: </h4>
         {comment.length === 0 ? "There is no comment yet !!" :
           comment.map((item) => {
             return (
-              <div>
+              <div className="shadow px-3 my-2">
                 <h5>{item.name}</h5>
                 <p>{item.body}</p>
               </div>
